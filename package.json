@@ -1,0 +1,35 @@
+{
+  "name": "docker-utils",
+  "version": "2.2.2",
+  "description": "Docker utils",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitnami/node-docker-utils.git"
+  },
+  "scripts": {
+    "gen-doc": "jsdoc index.js",
+    "lint": "gulp lint",
+    "test": "gulp test",
+    "ci-test": "gulp ci-test",
+    "ci-lint": "gulp ci-lint"
+  },
+  "keywords": [
+    "docker"
+  ],
+  "author": "Bitnami",
+  "license": "GPL-2.0",
+  "dependencies": {
+    "common-utils": "bitnami/node-common-utils#v2.0.0",
+    "nami-utils": "^0.1.0"
+  },
+  "devDependencies": {
+    "bitnami-gulp-common-tasks": "bitnami/gulp-common-tasks#v2.0.3",
+    "chai": "^3.5.0",
+    "eslint": "^2.11.1",
+    "eslint-config-bitnami": "bitnami/eslint-config-bitnami#v1.0.0",
+    "eslint-plugin-import": "^1.8.1",
+    "gulp": "^3.9.1",
+    "jsdoc": "^3.4.1"
+  }
+}
