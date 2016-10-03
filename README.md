@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/bitnami/node-docker-utils.svg?branch=master)](http://travis-ci.org/bitnami/node-docker-utils)
+
 # Docker Utils
 
 This package includes some methods for interacting with docker CLI.
