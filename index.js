@@ -91,9 +91,9 @@ function _parseRunOptions(runOptions) {
 function shell(imageId, options) {
   options = _.opts(options, {root: null, mappings: {}, runOptions: {}});
   options.runOptions = _.opts(options.runOptions, {
-    'interactive': true,
-    'tty': true,
+    'interactive': true
   });
+  if (_.isUndefined(process.env.NO_TTY)) options.runOptions.tty = true;
   const runOptions = _parseRunOptions(options.runOptions);
   const mappings = options.mappings;
   if (options.root) {
