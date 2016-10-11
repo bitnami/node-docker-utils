@@ -1,6 +1,5 @@
 'use strict';
 /* eslint-disable no-unused-expressions */
-const _ = require('lodash');
 const chai = require('chai');
 const expect = chai.expect;
 const spawnSync = require('child_process').spawnSync;
