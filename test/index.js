@@ -48,16 +48,6 @@ describe('Docker utils', function() {
         const res = du.shell('test-image');
         expect(res.args).to.be.eql(['docker', 'run', '--interactive', '--tty', 'test-image', 'bash']);
       });
-      it('should open a shell without tty', () => {
-        let res = null;
-        const previousENV = _.cloneDeep(process.env);
-        try {
-          process.env.NO_TTY = '1';
-          res = du.shell('test-image');
-        } catch (e) { /* not empty */ }
-        process.env = previousENV;
-        expect(res.args).to.be.eql(['docker', 'run', '--interactive', 'test-image', 'bash']);
-      });
       it('should mount root', () => {
         fs.mkdirSync(path.join(testDir, 'root'));
         fs.mkdirSync(path.join(testDir, 'root/test'));
