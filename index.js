@@ -91,9 +91,9 @@ function _parseRunOptions(runOptions) {
 function shell(imageId, options) {
   options = _.opts(options, {root: null, mappings: {}, runOptions: {}});
   options.runOptions = _.opts(options.runOptions, {
-    'interactive': true
+    'interactive': true,
+    'tty': true
   });
-  if (_.isUndefined(process.env.NO_TTY)) options.runOptions.tty = true;
   const runOptions = _parseRunOptions(options.runOptions);
   const mappings = options.mappings;
   if (options.root) {
@@ -104,7 +104,7 @@ function shell(imageId, options) {
   const binds = _getBinds(mappings);
   const cmdArgs = ['run'].concat(runOptions, binds);
   cmdArgs.push(imageId, 'bash');
-  return spawnSync('docker', cmdArgs, {stdio: 'inherit'});
+  return spawnSync('docker', cmdArgs, {stdio: 'inherit', shell: true});
 }
 
 /**
