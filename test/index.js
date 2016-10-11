@@ -45,17 +45,15 @@ describe('Docker utils', function() {
       });
       it('should open a shell', () => {
         const res = du.shell('test-image');
-        expect(res.args).to.be.eql(['docker', 'run', '--interactive', '--tty', 'test-image', 'bash']);
+        expect(res.args).to.be.eql(['/bin/sh', '-c', 'docker run --interactive --tty test-image bash']);
       });
       it('should mount root', () => {
         fs.mkdirSync(path.join(testDir, 'root'));
         fs.mkdirSync(path.join(testDir, 'root/test'));
         fs.mkdirSync(path.join(testDir, 'root/test/1'));
         const res = du.shell('test-image', {root: path.join(testDir, 'root/test')});
-        expect(res.args).to.be.eql([
-          'docker', 'run', '--interactive', '--tty',
-          '-v', `${path.join(testDir, 'root/test/1')}:/1`, 'test-image', 'bash'
-        ]);
+        expect(res.args).to.be.eql(['/bin/sh', '-c',
+          `docker run --interactive --tty -v ${path.join(testDir, 'root/test/1')}:/1 test-image bash`]);
       });
       it('should map a directory', () => {
         fs.mkdirSync(path.join(testDir, 'test'));
@@ -63,8 +61,7 @@ describe('Docker utils', function() {
         mappings[path.join(testDir, 'test')] = '/tmp/test';
         const res = du.shell('test-image', {mappings});
         expect(res.args).to.be.eql([
-          'docker', 'run', '--interactive', '--tty',
-          '-v', `${path.join(testDir, 'test')}:/tmp/test`, 'test-image', 'bash'
+          '/bin/sh', '-c', `docker run --interactive --tty -v ${path.join(testDir, 'test')}:/tmp/test test-image bash`
         ]);
       });
       it('should parse run options', () => {
@@ -72,9 +69,8 @@ describe('Docker utils', function() {
         const mappings = {};
         mappings[path.join(testDir, 'test')] = '/tmp/test';
         const res = du.shell('test-image', {runOptions: {name: 'test', privileged: true}});
-        expect(res.args).to.be.eql([
-          'docker', 'run', '--name', 'test', '--privileged', '--interactive', '--tty', 'test-image', 'bash'
-        ]);
+        expect(res.args).to.be.eql(['/bin/sh', '-c',
+          'docker run --name test --privileged --interactive --tty test-image bash']);
       });
     });
     describe('#getImageId', () => {
