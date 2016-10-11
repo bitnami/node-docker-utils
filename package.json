@@ -1,6 +1,6 @@
 {
   "name": "docker-utils",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Docker utils",
   "main": "index.js",
   "repository": {
