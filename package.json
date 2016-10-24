@@ -1,6 +1,6 @@
 {
   "name": "docker-utils",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "Docker utils",
   "main": "index.js",
   "repository": {
@@ -21,7 +21,7 @@
   "author": "Bitnami",
   "license": "GPL-2.0",
   "dependencies": {
-    "common-utils": "bitnami/node-common-utils#v2.0.1",
+    "common-utils": "bitnami/node-common-utils#v2.0.2",
     "nami-utils": "^0.1.0"
   },
   "devDependencies": {
