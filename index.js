@@ -156,7 +156,7 @@ function _parseRunCommandArguments(id, cmd, runOptions, mappings) {
  * @param {Object} [options.logger] - Logger to use
  * @param {Object} [options.timeout=10800] - Timeout for the command to run. Three hours by default.
  * Infinity is a valid value
- * @param {Object} [options.exitOnEnd=true] - Exit the current process after finishing
+ * @param {Object} [options.exitOnEnd=false] - Exit the current process after finishing
  * @example
  * runInContainerAsync('centos', ['find', '/'], () => {
  *   console.log('Command finished');

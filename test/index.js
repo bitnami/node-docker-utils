@@ -167,13 +167,13 @@ describe('Docker utils', function() {
     });
     describe('#runInContainer()', function() {
       const previousPATH = process.env.PATH;
-      beforeEach(() => {
+      before(() => {
         spawnSync('rm', ['-rf', testDir]);
         fs.mkdirSync(testDir);
         fs.writeFileSync(path.join(testDir, 'docker'), `#!/bin/bash\necho -n "$@"`, {mode: '0755'});
         process.env.PATH = `${testDir}:${process.env.PATH}`; // Mocks docker binary
       });
-      afterEach(() => {
+      after(() => {
         spawnSync('rm', ['-rf', testDir]);
         process.env.PATH = previousPATH;
       });
