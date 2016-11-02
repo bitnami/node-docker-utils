@@ -170,7 +170,7 @@ describe('Docker utils', function() {
       beforeEach(() => {
         spawnSync('rm', ['-rf', testDir]);
         fs.mkdirSync(testDir);
-        fs.writeFileSync(path.join(testDir, 'docker'), `#!/bin/bash\necho "$@"`, {mode: '0755'});
+        fs.writeFileSync(path.join(testDir, 'docker'), `#!/bin/bash\necho -n "$@"`, {mode: '0755'});
         process.env.PATH = `${testDir}:${process.env.PATH}`; // Mocks docker binary
       });
       afterEach(() => {
@@ -185,7 +185,7 @@ describe('Docker utils', function() {
           }
         });
         expect(res).to.be.eql('run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test ' +
-        '--interactive test-image true\n');
+        '--interactive test-image true');
       });
     });
   }
