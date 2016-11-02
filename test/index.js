@@ -184,7 +184,8 @@ describe('Docker utils', function() {
             '/tmp/test': {path: '/container/tmp/test', mode: 'rw'}
           }
         });
-        expect(res).to.contain('run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test test-image true');
+        expect(res).to.be.eql('run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test ' +
+        '--interactive test-image true\n');
       });
     });
   }

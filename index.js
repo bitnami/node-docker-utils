@@ -135,7 +135,10 @@ function getContainerId(name) {
   return !_.isEmpty(res) ? res : null;
 }
 
-function _prepareCmd(id, cmd, runOptions, mappings) {
+function _parseRunCommandArguments(id, cmd, runOptions, mappings) {
+  runOptions = _.opts(runOptions, {
+    'interactive': null
+  });
   const parsedRunOptions = _parseRunOptions(runOptions);
   const binds = _getBinds(mappings);
   return ['run'].concat(binds, parsedRunOptions, id, cmd);
@@ -169,7 +172,6 @@ function runInContainerAsync(id, cmd, callback, options) {
     runOptions: {}, exitOnEnd: false
   });
   options.runOptions = _.opts(options.runOptions, {
-    'interactive': null,
     'name': strftime('%s')
   });
   const _parseMsg = function(msg) {
@@ -197,7 +199,7 @@ function runInContainerAsync(id, cmd, callback, options) {
   process.on('SIGINT', function() {
     onExit({exitCode: 127});
   });
-  const _cmd = _prepareCmd(id, cmd, options.runOptions, options.mappings);
+  const _cmd = _parseRunCommandArguments(id, cmd, options.runOptions, options.mappings);
   const handler = nos.execAsync(`docker ${_cmd.join(' ')}`, {onStdout, onStderr, onExit});
   try {
     handler.wait({timeout: options.timeout, throwOnTimeout: true});
@@ -225,7 +227,7 @@ function runInContainerAsync(id, cmd, callback, options) {
  */
 function runInContainer(id, cmd, options) {
   options = _.opts(options, {mappings: [], runOptions: {}});
-  const _cmd = _prepareCmd(id, cmd, options.runOptions, options.mappings);
+  const _cmd = _parseRunCommandArguments(id, cmd, options.runOptions, options.mappings);
   return exec(_cmd.join(' '), options);
 }
 
