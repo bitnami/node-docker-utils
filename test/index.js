@@ -151,8 +151,9 @@ describe('Docker utils', function() {
           }
         });
         expect(finished).to.be.true;
-        expect(res).to.contain('run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test ' +
-        '--interactive test-image true');
+        expect(res).to.contain(
+          'run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test --interactive test-image true'
+        );
       });
       it('throws an error on timeout', () => {
         const logger = {
@@ -184,8 +185,9 @@ describe('Docker utils', function() {
             '/tmp/test': {path: '/container/tmp/test', mode: 'rw'}
           }
         });
-        expect(res).to.be.eql('run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test ' +
-        '--interactive test-image true');
+        expect(res).to.be.eql(
+          'run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test --interactive test-image true'
+        );
       });
     });
   }
