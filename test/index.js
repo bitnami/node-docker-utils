@@ -118,7 +118,7 @@ describe('Docker utils', function() {
         expect(res).to.be.true;
       });
     });
-    describe('#runInContainer()', function() {
+    describe('#runInContainerAsync()', function() {
       const previousPATH = process.env.PATH;
       this.timeout(10000);
       beforeEach(() => {
@@ -138,7 +138,7 @@ describe('Docker utils', function() {
         };
         let res = '';
         const write = (text) => res += `${text}\n`;
-        du.runInContainer('test-image', 'true', callback, {
+        du.runInContainerAsync('test-image', 'true', callback, {
           runOptions: {name: 'docker-utils-test'},
           mappings: {
             '/tmp/test': {path: '/container/tmp/test', mode: 'rw'}
@@ -151,8 +151,9 @@ describe('Docker utils', function() {
           }
         });
         expect(finished).to.be.true;
-        expect(res).to.contain('run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test ' +
-        '--interactive test-image true');
+        expect(res).to.contain(
+          'run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test --interactive test-image true'
+        );
       });
       it('throws an error on timeout', () => {
         const logger = {
@@ -161,8 +162,32 @@ describe('Docker utils', function() {
           error: () => {}
         };
         expect(() => {
-          du.runInContainer('test-image', 'true', null, {timeout: 1, exitOnEnd: false, logger});
+          du.runInContainerAsync('test-image', 'true', null, {timeout: 1, exitOnEnd: false, logger});
         }).to.throw('Exceeded timeout');
+      });
+    });
+    describe('#runInContainer()', function() {
+      const previousPATH = process.env.PATH;
+      before(() => {
+        spawnSync('rm', ['-rf', testDir]);
+        fs.mkdirSync(testDir);
+        fs.writeFileSync(path.join(testDir, 'docker'), `#!/bin/bash\necho -n "$@"`, {mode: '0755'});
+        process.env.PATH = `${testDir}:${process.env.PATH}`; // Mocks docker binary
+      });
+      after(() => {
+        spawnSync('rm', ['-rf', testDir]);
+        process.env.PATH = previousPATH;
+      });
+      it('runs a command', () => {
+        const res = du.runInContainer('test-image', 'true', {
+          runOptions: {name: 'docker-utils-test'},
+          mappings: {
+            '/tmp/test': {path: '/container/tmp/test', mode: 'rw'}
+          }
+        });
+        expect(res).to.be.eql(
+          'run -v /tmp/test:/container/tmp/test:rw --name docker-utils-test --interactive test-image true'
+        );
       });
     });
   }

@@ -134,9 +134,19 @@ function getContainerId(name) {
   const res = exec(`ps -aq --filter "name=${name}"`).replace('\n', '');
   return !_.isEmpty(res) ? res : null;
 }
+
+function _parseRunCommandArguments(id, cmd, runOptions, mappings) {
+  runOptions = _.opts(runOptions, {
+    'interactive': null
+  });
+  const parsedRunOptions = _parseRunOptions(runOptions);
+  const binds = _getBinds(mappings);
+  return ['run'].concat(binds, parsedRunOptions, id, cmd);
+}
+
 /**
  * Run a command in a Docker image
- * @function runInContainer
+ * @function runInContainerAsync
  * @param {string} id - Container image id
  * @param {string|Array} cmd - Command to execute
  * @param {Function} callback(container, err, data) - Callback to execute after running the command
@@ -146,9 +156,9 @@ function getContainerId(name) {
  * @param {Object} [options.logger] - Logger to use
  * @param {Object} [options.timeout=10800] - Timeout for the command to run. Three hours by default.
  * Infinity is a valid value
- * @param {Object} [options.exitOnEnd=true] - Exit the current process after finishing
+ * @param {Object} [options.exitOnEnd=false] - Exit the current process after finishing
  * @example
- * runInContainer('centos', ['find', '/'], () => {
+ * runInContainerAsync('centos', ['find', '/'], () => {
  *   console.log('Command finished');
  * }, {
  *   mappings: {
@@ -156,14 +166,14 @@ function getContainerId(name) {
  *     '/tmp/read': {path: '/tmp/read', mod: 'ro'}
  * });
  */
-function runInContainer(id, cmd, callback, options) {
-  options = _.opts(options, {mappings: [], logger: _getDummyLogger(), timeout: 10800, runOptions: {}, exitOnEnd: true});
+function runInContainerAsync(id, cmd, callback, options) {
+  options = _.opts(options, {
+    mappings: [], logger: _getDummyLogger(), timeout: 10800,
+    runOptions: {}, exitOnEnd: false
+  });
   options.runOptions = _.opts(options.runOptions, {
-    'interactive': null,
     'name': strftime('%s')
   });
-  const runOptions = _parseRunOptions(options.runOptions);
-  const binds = _getBinds(options.mappings);
   const _parseMsg = function(msg) {
     // Avoid multiple '\n'
     msg = _.compact(msg.toString('utf8').split('\n'));
@@ -189,8 +199,8 @@ function runInContainer(id, cmd, callback, options) {
   process.on('SIGINT', function() {
     onExit({exitCode: 127});
   });
-  const _cmd = ['docker', 'run'].concat(binds, runOptions, id, cmd);
-  const handler = nos.execAsync(_cmd.join(' '), {onStdout, onStderr, onExit});
+  const _cmd = _parseRunCommandArguments(id, cmd, options.runOptions, options.mappings);
+  const handler = nos.execAsync(`docker ${_cmd.join(' ')}`, {onStdout, onStderr, onExit});
   try {
     handler.wait({timeout: options.timeout, throwOnTimeout: true});
   } catch (e) {
@@ -198,6 +208,27 @@ function runInContainer(id, cmd, callback, options) {
     _removeContainer(containerId, null, {force: true});
     throw e;
   }
+}
+
+/**
+ * Run a command in a Docker image synchronously
+ * @function runInContainer
+ * @param {string} id - Container image id
+ * @param {string|Array} cmd - Command to execute
+ * @param {Object} [options]
+ * @param {Object} [options.mappings] - Key-value with the volumes to map using the host path as key
+ * and a string for the container path or an object specifying the path and the access mode (rw, ro)
+ * @example
+ * runInContainer('centos', ['find', '/'], {
+ *   mappings: {
+ *     '/tmp/test': '/tmp/test',
+ *     '/tmp/read': {path: '/tmp/read', mod: 'ro'}
+ * });
+ */
+function runInContainer(id, cmd, options) {
+  options = _.opts(options, {mappings: [], runOptions: {}});
+  const _cmd = _parseRunCommandArguments(id, cmd, options.runOptions, options.mappings);
+  return exec(_cmd.join(' '), options);
 }
 
 /**
@@ -275,6 +306,7 @@ function verifyConnection() {
 
 module.exports = {
   runInContainer,
+  runInContainerAsync,
   shell,
   exec,
   pull,
