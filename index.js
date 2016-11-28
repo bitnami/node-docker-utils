@@ -284,8 +284,10 @@ function loadImage(imagePath) {
  * build('/tmp/centos/', 'centos', {tag: 'r01'});
  */
 function build(imagePath, name, options) {
-  options = _.opts(options, {tag: 'latest'});
-  return exec(`build -t ${name}:${options.tag} ${imagePath}`);
+  options = _.opts(options, {tag: 'latest', useCache: true});
+  let command = `build -t ${name}:${options.tag}`;
+  if (!options.useCache) command += ` --no-cache`;
+  return exec(`${command} ${imagePath}`);
 }
 
 /**
