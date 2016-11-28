@@ -1,5 +1,6 @@
 'use strict';
 /* eslint-disable no-unused-expressions */
+const _ = require('lodash');
 const chai = require('chai');
 const expect = chai.expect;
 const spawnSync = require('child_process').spawnSync;
@@ -105,9 +106,10 @@ describe('Docker utils', function() {
       });
     });
     describe('#build', () => {
-      after(() => {
+      afterEach(() => {
         du.exec('rmi hello-world:test');
         du.exec('rmi hello-world:test-2');
+        spawnSync('rm', ['-rf', testDir]);
       });
       it('builds a new image', () => {
         du.loadImage(path.join(__dirname, 'resources/base-image.tar'));
@@ -116,6 +118,19 @@ describe('Docker utils', function() {
         du.build(testDir, 'hello-world', {tag: 'test-2'});
         const res = du.imageExists('hello-world:test-2');
         expect(res).to.be.true;
+      });
+      it('builds a new image without using the cache', () => {
+        du.loadImage(path.join(__dirname, 'resources/base-image.tar'));
+        fs.mkdirSync(testDir);
+        fs.writeFileSync(path.join(testDir, 'testfile1'), 'test');
+        fs.writeFileSync(path.join(testDir, 'Dockerfile'), 'FROM hello-world:test');
+        let log = '';
+        const logger = {};
+        _.each(['info', 'debug', 'trace', 'trace2', 'trace3', 'trace4', 'trace5', 'trace6', 'trace7', 'trace8'], l => {
+          logger[l] = (msg) => log += `${msg}\n`;
+        });
+        du.build(testDir, 'hello-world', {tag: 'test-2', noCache: true, logger});
+        expect(log).to.contain('--no-cache');
       });
     });
     describe('#runInContainerAsync()', function() {
