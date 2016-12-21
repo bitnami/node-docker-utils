@@ -1,6 +1,6 @@
 {
   "name": "docker-utils",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Docker utils",
   "main": "index.js",
   "repository": {
@@ -22,7 +22,7 @@
   "license": "GPL-2.0",
   "dependencies": {
     "common-utils": "bitnami/node-common-utils#v2.0.2",
-    "nami-utils": "^0.1.0"
+    "nami-utils": "^0.2.0"
   },
   "devDependencies": {
     "bitnami-gulp-common-tasks": "bitnami/gulp-common-tasks#v2.0.4",
