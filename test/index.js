@@ -79,6 +79,7 @@ describe('Docker utils', function() {
         du.exec('rmi hello-world:test');
       });
       it('loads and gets an image ID', () => {
+        this.timeout(10000);
         du.loadImage(path.join(__dirname, 'resources/base-image.tar'));
         const id = du.getImageId('hello-world:test');
         expect(id).to.not.be.empty;
@@ -90,6 +91,7 @@ describe('Docker utils', function() {
         du.exec('rmi hello-world:test');
       });
       it('loads and gets a container ID', () => {
+        this.timeout(10000);
         du.loadImage(path.join(__dirname, 'resources/base-image.tar'));
         du.exec('run --name docker-utils-test hello-world:test');
         expect(du.getContainerId('docker-utils-test')).to.not.be.empty;
