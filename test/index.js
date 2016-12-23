@@ -13,7 +13,7 @@ const testDir = '/tmp/compilation-utils-tests';
 
 describe('Docker utils', function() {
   let isDockerAvalilable = false;
-  this.timeout(5000);
+  this.timeout(10000);
   try {
     isDockerAvalilable = du.verifyConnection();
   } catch (e) { /* Not available */ }
