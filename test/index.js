@@ -116,10 +116,19 @@ describe('Docker utils', function() {
       it('builds a new image', () => {
         du.loadImage(path.join(__dirname, 'resources/base-image.tar'));
         fs.mkdirSync(testDir);
+        const dockerfilePath = path.join(path.join(testDir, 'Dockerfile-custom'));
+        fs.writeFileSync(dockerfilePath, `FROM hello-world:test\n`);
+        du.build(testDir, 'hello-world', {tag: 'test-2', dockerfile: dockerfilePath});
+        const res = du.imageExists('hello-world:test-2');
+        expect(res).to.be.equal(true);
+      });
+      it('builds a new image, passing path to Dockerfile', () => {
+        du.loadImage(path.join(__dirname, 'resources/base-image.tar'));
+        fs.mkdirSync(testDir);
         fs.writeFileSync(path.join(testDir, 'Dockerfile'), `FROM hello-world:test\n`);
         du.build(testDir, 'hello-world', {tag: 'test-2'});
         const res = du.imageExists('hello-world:test-2');
-        expect(res).to.be.true;
+        expect(res).to.be.equal(true);
       });
       it('builds a new image without using the cache', () => {
         du.loadImage(path.join(__dirname, 'resources/base-image.tar'));

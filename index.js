@@ -280,15 +280,24 @@ function loadImage(imagePath) {
  * @param {string} name - Name of the image
  * @param {Object} [options]
  * @param {string} [options.tag='latest'] - Tag of the image
+ * @param {Boolean} [options.noCache=true] - Rebuild all the layers of the image
+ * @param {string} [options.dockerfile=null] - Path to the Dockerfile to be used for building the image
  * @example
  * build('/tmp/centos/', 'centos', {tag: 'r01'});
  */
 function build(imagePath, name, options) {
-  options = _.opts(options, {tag: 'latest', noCache: true});
-  let command = `build -t ${name}:${options.tag}`;
-  if (options.noCache) command += ` --no-cache`;
-  return exec(`${command} ${imagePath}`, options);
+  options = _.opts(options, {tag: null, noCache: true, dockerfile: null});
+  const imageName = options.tag ? `${name}:${options.tag}` : name;
+  const args = ['build', '-t', imageName];
+
+  if (options.noCache) args.push('--no-cache');
+  if (options.dockerfile) args.push('-f', options.dockerfile);
+
+  args.push(imagePath);
+
+  return exec(args, options);
 }
+
 
 /**
  * Check if Docker daemon is available and running
