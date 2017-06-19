@@ -1,6 +1,6 @@
 {
   "name": "docker-utils",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Docker utils",
   "main": "index.js",
   "repository": {
@@ -21,11 +21,12 @@
   "author": "Bitnami",
   "license": "GPL-2.0",
   "dependencies": {
-    "common-utils": "bitnami/node-common-utils#v2.0.2",
-    "nami-utils": "^0.2.0"
+    "common-utils": "bitnami/node-common-utils#v2.2.0",
+    "nami-utils": "^0.2.1",
+    "strftime": "^0.10.0"
   },
   "devDependencies": {
-    "bitnami-gulp-common-tasks": "bitnami/gulp-common-tasks#v2.0.4",
+    "bitnami-gulp-common-tasks": "bitnami/gulp-common-tasks#v2.1.1",
     "chai": "^3.5.0",
     "eslint": "^2.11.1",
     "eslint-config-bitnami": "bitnami/eslint-config-bitnami#v1.0.0",
