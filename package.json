@@ -1,6 +1,6 @@
 {
   "name": "docker-utils",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "Docker utils",
   "main": "index.js",
   "repository": {
@@ -28,7 +28,7 @@
   "devDependencies": {
     "bitnami-gulp-common-tasks": "bitnami/gulp-common-tasks#v2.1.1",
     "chai": "^3.5.0",
-    "eslint": "^2.11.1",
+    "eslint": "^4.18.2",
     "eslint-config-bitnami": "bitnami/eslint-config-bitnami#v1.0.0",
     "eslint-plugin-import": "^1.8.1",
     "gulp": "^3.9.1",
