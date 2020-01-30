@@ -154,7 +154,7 @@ function _parseRunCommandArguments(id, cmd, runOptions, mappings) {
  * @param {Object} [options.mappings] - Key-value with the volumes to map using the host path as key
  * and a string for the container path or an object specifying the path and the access mode (rw, ro)
  * @param {Object} [options.logger] - Logger to use
- * @param {Object} [options.timeout=10800] - Timeout for the command to run. Three hours by default.
+ * @param {Object} [options.timeout=18000] - Timeout for the command to run. Five hours by default.
  * Infinity is a valid value
  * @param {Object} [options.exitOnEnd=false] - Exit the current process after finishing
  * @example
@@ -168,7 +168,7 @@ function _parseRunCommandArguments(id, cmd, runOptions, mappings) {
  */
 function runInContainerAsync(id, cmd, callback, options) {
   options = _.opts(options, {
-    mappings: [], logger: _getDummyLogger(), timeout: 10800,
+    mappings: [], logger: _getDummyLogger(), timeout: 18000,
     runOptions: {}, exitOnEnd: false
   });
   options.runOptions = _.opts(options.runOptions, {
