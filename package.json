@@ -23,7 +23,7 @@
   "license": "GPL-2.0",
   "dependencies": {
     "common-utils": "github:bitnami/node-common-utils#v2.2.0",
-    "nami-utils": "github:bitnami/node-common-utils#v2.0.1",
+    "nami-utils": "github:bitnami/nami-utils#v2.0.1",
     "strftime": "^0.10.0"
   },
   "devDependencies": {
