@@ -1,0 +1,22 @@
+name: Test - PR
+
+on: pull_request
+     
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 8.17.0
+        uses: actions/setup-node@v1
+        with:
+          node-version: 8.17.0
+      - name: Build
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: script --quiet --return -c "npm run test" /dev/null
+      - name: Copy&Paste detection
+        run: npm run cpd

@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/bitnami/node-docker-utils.svg?branch=master)](http://travis-ci.org/bitnami/node-docker-utils)
+[![Build Status](https://github.com/bitnami/node-docker-utils/actions/workflows/main.yml/badge.svg)](https://github.com/bitnami/node-docker-utils/actions/workflows/main.yml)
 
 # Docker Utils
 

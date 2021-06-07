@@ -11,6 +11,7 @@
     "gen-doc": "jsdoc index.js",
     "lint": "gulp lint",
     "test": "gulp test",
+    "cpd": "gulp cpd",
     "ci-test": "gulp ci-test",
     "ci-lint": "gulp ci-lint",
     "ci-cpd": "gulp ci-cpd"
@@ -21,15 +22,15 @@
   "author": "Bitnami",
   "license": "GPL-2.0",
   "dependencies": {
-    "common-utils": "bitnami/node-common-utils#v2.2.0",
-    "nami-utils": "^0.2.1",
+    "common-utils": "github:bitnami/node-common-utils#v2.2.0",
+    "nami-utils": "github:bitnami/nami-utils#v2.0.1",
     "strftime": "^0.10.0"
   },
   "devDependencies": {
-    "bitnami-gulp-common-tasks": "bitnami/gulp-common-tasks#v2.1.1",
+    "bitnami-gulp-common-tasks": "github:bitnami/gulp-common-tasks#v2.1.1",
     "chai": "^3.5.0",
     "eslint": "^5.16.0",
-    "eslint-config-bitnami": "bitnami/eslint-config-bitnami#v1.0.0",
+    "eslint-config-bitnami": "github:bitnami/eslint-config-bitnami#v1.0.0",
     "eslint-plugin-import": "^1.8.1",
     "gulp": "^3.9.1",
     "jsdoc": "^3.4.1"
